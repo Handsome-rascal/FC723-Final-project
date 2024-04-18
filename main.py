@@ -61,14 +61,12 @@ def check_availability(seat_choice): # checks availablity of seat
             choice = input("would you like to search again (\"yes\" or \"no\"): ")
             if choice == "yes":
                 seat_choice = input("Enter the seat that you are checking availability for (for example: 35B): ")  # asks user what seat they are looking for (following the flight floor plan given on the final project document
-                check_availability(seat_choice)
+                check_availability(seat_choice) # will then go through the function again with the new seat choice
+                break  # breaks so it doesnt continue to else statement after
             elif choice == "no":
                 break # breaks out of while loop if user enters no, which will return to the menu
             else:
                 print("Please enter either \"yes\" or \"no\"")
-
-
-
 
 def book_seat(seat_choice):
     seat_not_found = True  # initalises seat not found to true initaily
@@ -88,15 +86,40 @@ def book_seat(seat_choice):
         while True:  # since seat was not found this segment will check if user wants to search again or return to the menu
             choice = input("would you like to search again (\"yes\" or \"no\"): ")
             if choice == "yes":
-                seat_choice = input(
-                    "Enter the seat that you are trying to book (for example: 35B): ")  # asks user what seat they are looking for (following the flight floor plan given on the final project document
-                check_availability(seat_choice)
+                seat_choice = input("Enter the seat that you are trying to book (for example: 35B): ")  # asks user what seat they are looking for (following the flight floor plan given on the final project document)
+                book_seat(seat_choice) # will then go through the function again with the new seat choice
+                break # breaks so it doesnt continue to else statement after
             elif choice == "no":
                 break  # breaks out of while loop if user enters no, which will return to the menu
             else:
                 print("Please enter either \"yes\" or \"no\"")
-def free_seat():
-    print("3")  # nothing for now
+
+def free_seat(seat_choice):
+    seat_not_found = True  # initalises seat not found to true initaily
+    for x in Burak757_floor_plan:  # goes through each seat in the floor plan
+        if x[0] == seat_choice:  # if the name of the seat is the same as the one the user is seaching for it will exicute the if statement
+            if x[1] == "Booked":  # if the seat is booked it will free it and let the user know the seat has been freed
+                x[1] = "free" # sets the seat to free
+                print(seat_choice + " is now " + x[1])
+                seat_not_found = False  # it will then set seat not found to false because the seat was found even though it was booked or not bookable
+                break  # will break out of the for loop because seat was found and actions were taken already
+            else:  # this will go through if the seat was found and it is free
+                print("seat " + x[0] + " was already free")  # it will then inform the user that seat they tried to free was already free
+                seat_not_found = False  # it will then set seat not found to false because the seat was found
+                break  # will break out of the for loop because seat was found and actions were taken already
+    if seat_not_found:  # will go through if the seat was not found
+        print("there is no seat on the system named " + seat_choice + " (please use floor plan which is given on final project document if confused on which seat numbers there are)")  # informs the user the seat they are searching for was entered incorectly or not on the system
+        while True:  # since seat was not found this segment will check if user wants to search again or return to the menu
+            choice = input("would you like to search again (\"yes\" or \"no\"): ")
+            if choice == "yes":
+                seat_choice = input("Enter the seat that you are trying to free (for example: 35B): ")  # asks user what seat they are looking for (following the flight floor plan given on the final project document
+                free_seat(seat_choice) # will then go through the function again with the new seat choice
+                break  # breaks so it doesnt continue to else statement after
+            elif choice == "no":
+                break  # breaks out of while loop if user enters no, which will return to the menu
+            else:
+                print("Please enter either \"yes\" or \"no\"")
+
 def show_booking_state():
     print("4") # nothing for now
 
@@ -109,7 +132,8 @@ while True: # will continue to go through this until user enters 5 in display_me
         seat_choice = input("Enter the seat that you are trying to book (for example: 35B, use floorplan for seat names): ")  # asks user what seat they are trying to book (following the flight floor plan given on the final project document)
         book_seat(seat_choice)
     elif user_choice == "3":
-        free_seat()
+        seat_choice = input("Enter the seat that you are trying to free (for example: 35B, use floorplan for seat names): ")  # asks user what seat they are trying to book (following the flight floor plan given on the final project document)
+        free_seat(seat_choice)
     elif user_choice == "4":
         show_booking_state()
     elif user_choice == "5":
