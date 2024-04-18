@@ -18,11 +18,11 @@ for i in range (0,7):  # since there are seven rows this will be keeping track o
     for x in range (1,81): # since there are 80 rows this will get the seat number for each collum
         if i != 3: # since on the given floor plan they are all seats except for walkway (and storage) and walkway is all collum 3, this controls that and makes sure that it only assigns seat number and availability if its not the walkway
             if i > 3 and x == 77 or x == 78: # since on the given floor plan storage is only on collums "D","E","F" and at row 77 and 78 on each of these collum (because this makes each new collum start at 0 and end at 80) it will acurately assign storage to where it should be acording to the floor plan given on the final project document
-                Burak757_floor_plan.append(("Storage", "Not bookable")) # assigns the storage places
+                Burak757_floor_plan.append(["Storage", "Not bookable"]) # assigns the storage places
             else:
-                Burak757_floor_plan.append((str(x) + seat,"free")) # since this only exicutes if its not a walkway and not a storage place this will accuratly add the seats (sets them all to free initaily)
+                Burak757_floor_plan.append([str(x) + seat,"free"]) # since this only exicutes if its not a walkway and not a storage place this will accuratly add the seats (sets them all to free initaily)
         else:
-            Burak757_floor_plan.append((seat, "Not bookable")) # this will assign the walkways
+            Burak757_floor_plan.append([seat, "Not bookable"]) # this will assign the walkways
 
 
 
@@ -54,8 +54,9 @@ def check_availability(seat_choice): # checks availablity of seat
         if x[0] == seat_choice: # if the name of the seat is the same as the one the user is seaching for it will exixute the if statement
             print("seat is " + x[1]) # it will then print the seats availablity
             seat_not_found = False # it will then set seat not found to false because the seat was found
+            break  # will break out of the for loop because seat was found and actions were taken already
     if seat_not_found: # will go through if the seat was not found
-        print("there is no seat on the system named " + seat_choice) # informs the user the seat they are searching for was entered incorectly or not on the system
+        print("there is no seat on the system named " + seat_choice + " (please use floor plan which is given on final project document if confused on which seat numbers there are)") # informs the user the seat they are searching for was entered incorectly or not on the system
         while True: # since seat was not found this segment will check if user wants to search again or return to the menu
             choice = input("would you like to search again (\"yes\" or \"no\"): ")
             if choice == "yes":
@@ -69,8 +70,31 @@ def check_availability(seat_choice): # checks availablity of seat
 
 
 
-def book_seat():
-    print("2")  # nothing for now
+def book_seat(seat_choice):
+    seat_not_found = True  # initalises seat not found to true initaily
+    for x in Burak757_floor_plan:  # goes through each seat in the floor plan
+        if x[0] == seat_choice:  # if the name of the seat is the same as the one the user is seaching for it will exicute the if statement
+            if x[1] == "Booked" or x[1] == "Not bookable": # if the seat is already booked or not bookable it will inform the user
+                print("sorry "  + seat_choice + " is " + x[1])
+                seat_not_found = False  # it will then set seat not found to false because the seat was found even though it was booked or not bookable
+                break # will break out of the for loop because seat was found and actions were taken already
+            else: # this will go through if the seat was found and it is free
+                x[1] = "Booked" # it will then set the seat to booked
+                print("seat " + x[0] + " was booked")  # it will then inform the user that they sucessfuly booked the seat
+                seat_not_found = False  # it will then set seat not found to false because the seat was found
+                break  # will break out of the for loop because seat was found and actions were taken already
+    if seat_not_found:  # will go through if the seat was not found
+        print("there is no seat on the system named " + seat_choice + " (please use floor plan which is given on final project document if confused on which seat numbers there are)")  # informs the user the seat they are searching for was entered incorectly or not on the system
+        while True:  # since seat was not found this segment will check if user wants to search again or return to the menu
+            choice = input("would you like to search again (\"yes\" or \"no\"): ")
+            if choice == "yes":
+                seat_choice = input(
+                    "Enter the seat that you are trying to book (for example: 35B): ")  # asks user what seat they are looking for (following the flight floor plan given on the final project document
+                check_availability(seat_choice)
+            elif choice == "no":
+                break  # breaks out of while loop if user enters no, which will return to the menu
+            else:
+                print("Please enter either \"yes\" or \"no\"")
 def free_seat():
     print("3")  # nothing for now
 def show_booking_state():
@@ -79,10 +103,11 @@ def show_booking_state():
 while True: # will continue to go through this until user enters 5 in display_menu function in which case it will break
     user_choice = display_menu() # this will call the display menu function which will print out the menu and return what the user wants to do (either 1, 2, 3, 4 or 5)
     if user_choice == "1":
-        seat_choice = input("Enter the seat that you are checking availability for (for example: 35B, use floorplan for seat names): ") # asks user what seat they are looking for (following the flight floor plan given on the final project document
+        seat_choice = input("Enter the seat that you are checking availability for (for example: 35B, use floorplan for seat names): ") # asks user what seat they are looking for (following the flight floor plan given on the final project document)
         check_availability(seat_choice)
     elif user_choice == "2":
-        book_seat()
+        seat_choice = input("Enter the seat that you are trying to book (for example: 35B, use floorplan for seat names): ")  # asks user what seat they are trying to book (following the flight floor plan given on the final project document)
+        book_seat(seat_choice)
     elif user_choice == "3":
         free_seat()
     elif user_choice == "4":
