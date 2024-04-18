@@ -37,3 +37,38 @@ for i in range (0,7):  # since there are seven rows this will be keeping track o
     for x in range (0,80):
         print(Burak757_floor_plan[z + x],end="") # this prints out each specific seat in each row
 """
+
+def display_menu(): # menu function that prints out the menu and gets users choice of what he wants to do
+    print("Menu:")
+    print("1. Check availability of seat")
+    print("2. Book a seat")
+    print("3. Free a seat")
+    print("4. Show booking state")
+    print("5. Exit program")
+    choice = input("Please select an option (1-5): ") 
+    return choice # returns what the user wants to do
+
+def check_availability():
+    print("1")  # nothing for now
+def book_seat():
+    print("2")  # nothing for now
+def free_seat():
+    print("3")  # nothing for now
+def show_booking_state():
+    print("4") # nothing for now
+
+while True:
+    user_choice = display_menu() # this will call the display menu function which will print out the menu and return what the user wants to do (either 1, 2, 3, 4 or 5)
+    if user_choice == "1":
+        check_availability()
+    elif user_choice == "2":
+        book_seat()
+    elif user_choice == "3":
+        free_seat()
+    elif user_choice == "4":
+        show_booking_state()
+    elif user_choice == "5":
+        print("Exiting program.")
+        break # since he chose 5 to exit the program this will end the while loop which will stop the menu
+    else:
+        print("Invalid option, please choose a valid number (1-5).") # this will happen if the user prints anything other than the given choices (reminds user the inputs they should use)
