@@ -45,11 +45,30 @@ def display_menu(): # menu function that prints out the menu and gets users choi
     print("3. Free a seat")
     print("4. Show booking state")
     print("5. Exit program")
-    choice = input("Please select an option (1-5): ") 
+    choice = input("Please select an option (1-5): ")
     return choice # returns what the user wants to do
 
-def check_availability():
-    print("1")  # nothing for now
+def check_availability(seat_choice): # checks availablity of seat
+    seat_not_found = True # initalises seat not found to true initaily
+    for x in Burak757_floor_plan: # goes through each seat in the floor plan
+        if x[0] == seat_choice: # if the name of the seat is the same as the one the user is seaching for it will exixute the if statement
+            print("seat is " + x[1]) # it will then print the seats availablity
+            seat_not_found = False # it will then set seat not found to false because the seat was found
+    if seat_not_found: # will go through if the seat was not found
+        print("there is no seat on the system named " + seat_choice) # informs the user the seat they are searching for was entered incorectly or not on the system
+        while True: # since seat was not found this segment will check if user wants to search again or return to the menu
+            choice = input("would you like to search again (\"yes\" or \"no\"): ")
+            if choice == "yes":
+                seat_choice = input("Enter the seat that you are checking availability for (for example: 35B): ")  # asks user what seat they are looking for (following the flight floor plan given on the final project document
+                check_availability(seat_choice)
+            elif choice == "no":
+                break # breaks out of while loop if user enters no, which will return to the menu
+            else:
+                print("Please enter either \"yes\" or \"no\"")
+
+
+
+
 def book_seat():
     print("2")  # nothing for now
 def free_seat():
@@ -57,10 +76,11 @@ def free_seat():
 def show_booking_state():
     print("4") # nothing for now
 
-while True:
+while True: # will continue to go through this until user enters 5 in display_menu function in which case it will break
     user_choice = display_menu() # this will call the display menu function which will print out the menu and return what the user wants to do (either 1, 2, 3, 4 or 5)
     if user_choice == "1":
-        check_availability()
+        seat_choice = input("Enter the seat that you are checking availability for (for example: 35B, use floorplan for seat names): ") # asks user what seat they are looking for (following the flight floor plan given on the final project document
+        check_availability(seat_choice)
     elif user_choice == "2":
         book_seat()
     elif user_choice == "3":
