@@ -1,3 +1,7 @@
+import random # added random import for function that will produce a random booking reference
+
+booking_refrences = [] # this will store the booking refrences so newly generated refrences can be compared and ensured that they are new
+
 Burak757_floor_plan = [] # this is the floor plan of the plane which will be filled out to hold the elements of the plane floor plan given in the final project document, this is importatnt because the functions i will be making later such as one to book a seat will be working with this
 
 for i in range (0,7):  # since there are seven rows this will be keeping track of weather it is A,B,C, Walkway, ect...
@@ -37,6 +41,20 @@ for i in range (0,7):  # since there are seven rows this will be keeping track o
     for x in range (0,80):
         print(Burak757_floor_plan[z + x],end="") # this prints out each specific seat in each row
 """
+
+def booking_refrence():
+    possible_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" # defines the possible characters to be used in the booking reference, including both letters and numbers
+    while True: # start an infinite loop to keep trying until a unique booking reference is generated
+        Not_existing = True  # initialize a flag to track if the generated reference does not exist in the list
+        random_booking_refrence = ''.join(random.choices(possible_chars, k=8)) # generate a random booking reference of 8 characters from the possible characters
+        for booking_ref in booking_refrences: # loop through existing booking references to check for uniqueness
+            if random_booking_refrence == booking_ref: # If the generated reference matches an existing one, set the flag to false so if statment doesnt get trigered and while loop goes through gain generating new number
+                Not_existing = False
+                print("x")
+        if Not_existing: # if after checking all, the reference is unique (flag remains True), add to the list to be checked against future tags and return it
+            booking_refrences.append(random_booking_refrence)
+            return random_booking_refrence
+
 
 def display_menu(): # menu function that prints out the menu and gets users choice of what he wants to do
     print("Menu:")
