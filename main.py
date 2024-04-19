@@ -8,7 +8,7 @@ for i in range (0,7):  # since there are seven rows this will be keeping track o
     if i == 2:
         seat = "C"
     if i == 3:
-        seat = "Walk way "
+        seat = "Walk way"
     if i == 4:
         seat = "D"
     if i == 5:
@@ -121,7 +121,17 @@ def free_seat(seat_choice):
                 print("Please enter either \"yes\" or \"no\"")
 
 def show_booking_state():
-    print("4") # nothing for now
+    seats_booked = 0 # starts off at 0 seats booked
+    print("the following seats have been booked: ") # starts the text layout
+    for x in Burak757_floor_plan: # goes through each seat in the floor plan
+        if x[1] == "Booked": # if it is booked it will print out the seats name and let the user know it was booked
+            print(x[0] + " was booked")
+            seats_booked += 1 # increases the number of seats booked by 1
+    if seats_booked == 0: # if no seats were booked it will let the user know
+        print("no seats have been booked which means the aircrafts total of 474 seats are still remaining")
+    else:   # if there are seats booked it will tell the user the amount remaining
+        print("there are currently " + str(474 - seats_booked) + " unbooked seats remaining")
+
 
 while True: # will continue to go through this until user enters 5 in display_menu function in which case it will break
     user_choice = display_menu() # this will call the display menu function which will print out the menu and return what the user wants to do (either 1, 2, 3, 4 or 5)
