@@ -1,5 +1,7 @@
 import random # added random import for function that will produce a random booking reference
 
+customer_data = [] # added data structure to hold custumer data such as seat they booked, booking refrence, first name, last name, and passport number
+
 booking_refrences = [] # this will store the booking refrences so newly generated refrences can be compared and ensured that they are new
 
 Burak757_floor_plan = [] # this is the floor plan of the plane which will be filled out to hold the elements of the plane floor plan given in the final project document, this is importatnt because the functions i will be making later such as one to book a seat will be working with this
@@ -42,6 +44,24 @@ for i in range (0,7):  # since there are seven rows this will be keeping track o
         print(Burak757_floor_plan[z + x],end="") # this prints out each specific seat in each row
 """
 
+
+def show_booking_customers_details(): # made function that prints out each customer whos booked data, to show part B question 2 task was completed effectivley
+    if len(customer_data) < 1: # if custumer data is less than one then it means that there are no bookings
+        print("no customers have any bookings yet")
+    else:
+        for x in customer_data: # goes through each customers data and prints it out
+            print("") # makes gap so it looks nicer
+            print("Customer " + x[2] + " " + x[3] + " has booked seat " + x[0])
+            print(x[2] + " " + x[3] + "'s passport number is " + x[4] + " and the booking refrence is " + x[1])
+            print("") # makes gap to difrentiate between bookings
+
+def remove_custumer_details(seat_that_will_be_freed): # this function will be called in the free seat function because the task requires us to also remove the customers details which this will acomplish
+    for info in customer_data: # goes through each custumers who has booked data
+        if info[0] == seat_that_will_be_freed: # finds out which custumer booked the seat which will now be freed to remove that data
+            booking_refrences.remove(info[1]) # removes booking refrence from the booking refrence list since all the data is being removed that unique id can be used again
+            customer_data.remove(info) # removes the customers data who booked that seat
+            break # now that the customer details has been removed there is no need to continue
+
 def booking_refrence():
     possible_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" # defines the possible characters to be used in the booking reference, including both letters and numbers
     while True: # start an infinite loop to keep trying until a unique booking reference is generated
@@ -62,8 +82,9 @@ def display_menu(): # menu function that prints out the menu and gets users choi
     print("2. Book a seat")
     print("3. Free a seat")
     print("4. Show booking state")
-    print("5. Exit program")
-    choice = input("Please select an option (1-5): ")
+    print("5. show customers data (shows information of customers who have booked)") # added menu option for question 2 part B
+    print("6. Exit program")
+    choice = input("Please select an option (1-6): ")
     return choice # returns what the user wants to do
 
 def check_availability(seat_choice): # checks availablity of seat
@@ -96,6 +117,7 @@ def book_seat(seat_choice):
                 break # will break out of the for loop because seat was found and actions were taken already
             else: # this will go through if the seat was found and it is free
                 x[1] = "Booked" # it will then set the seat to booked
+                customer_data.append([x[0], booking_refrence(), input("please enter your first name: "), input("please enter your last name: "), input("please enter your passport number: ")]) # when a booking is succefully made this will get the details needed and store it in a data structure
                 print("seat " + x[0] + " was booked")  # it will then inform the user that they sucessfuly booked the seat
                 seat_not_found = False  # it will then set seat not found to false because the seat was found
                 break  # will break out of the for loop because seat was found and actions were taken already
@@ -117,14 +139,19 @@ def free_seat(seat_choice):
     for x in Burak757_floor_plan:  # goes through each seat in the floor plan
         if x[0] == seat_choice:  # if the name of the seat is the same as the one the user is seaching for it will exicute the if statement
             if x[1] == "Booked":  # if the seat is booked it will free it and let the user know the seat has been freed
+                remove_custumer_details(x[0]) # removes the customers details as part B question 2 says it should do
                 x[1] = "free" # sets the seat to free
                 print(seat_choice + " is now " + x[1])
                 seat_not_found = False  # it will then set seat not found to false because the seat was found even though it was booked or not bookable
                 break  # will break out of the for loop because seat was found and actions were taken already
-            else:  # this will go through if the seat was found and it is free
+            elif x[1] == "free": # this will go through if the seat was found and it is already free
                 print("seat " + x[0] + " was already free")  # it will then inform the user that seat they tried to free was already free
                 seat_not_found = False  # it will then set seat not found to false because the seat was found
                 break  # will break out of the for loop because seat was found and actions were taken already
+            else: # this will only happen if a walk way or storage is attemted to be freed
+                print("sorry " + x[0] + " is not a seat, therefore it can not be freed")
+                seat_not_found = False # because what the user was looking for was found
+                break # this will break because what the user was looking for was found
     if seat_not_found:  # will go through if the seat was not found
         print("there is no seat on the system named " + seat_choice + " (please use floor plan which is given on final project document if confused on which seat numbers there are)")  # informs the user the seat they are searching for was entered incorectly or not on the system
         while True:  # since seat was not found this segment will check if user wants to search again or return to the menu
@@ -137,6 +164,7 @@ def free_seat(seat_choice):
                 break  # breaks out of while loop if user enters no, which will return to the menu
             else:
                 print("Please enter either \"yes\" or \"no\"")
+
 
 def show_booking_state():
     seats_booked = 0 # starts off at 0 seats booked
@@ -165,6 +193,8 @@ while True: # will continue to go through this until user enters 5 in display_me
     elif user_choice == "4":
         show_booking_state()
     elif user_choice == "5":
+        show_booking_customers_details()
+    elif user_choice == "6":
         print("Exiting program.")
         break # since he chose 5 to exit the program this will end the while loop which will stop the menu
     else:
